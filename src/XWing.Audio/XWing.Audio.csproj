@@ -1,0 +1,15 @@
+<Project Sdk="Microsoft.NET.Sdk">
+  <!-- Audio: MIDI, synthesis, adaptive music, procedural SFX. Engine-independent like XWing.Sim. -->
+  <PropertyGroup>
+    <TargetFramework>net8.0</TargetFramework>
+    <RootNamespace>XWing.Audio</RootNamespace>
+    <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
+  </PropertyGroup>
+  <ItemGroup>
+    <!-- Optional SoundFont playback (MIT). Only used when the player supplies an .sf2. -->
+    <PackageReference Include="MeltySynth" Version="2.4.1" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\XWing.Sim\XWing.Sim.csproj" />
+  </ItemGroup>
+</Project>

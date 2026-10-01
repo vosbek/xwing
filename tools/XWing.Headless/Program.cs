@@ -1,4 +1,8 @@
 using System.Globalization;
+using XWing.Audio;
+using XWing.Audio.Music;
+using XWing.Audio.Sfx;
+using XWing.Audio.Synthesis;
 using XWing.Sim.Core;
 using XWing.Sim.Data;
 using XWing.Sim.Missions;
@@ -22,6 +26,7 @@ switch (command)
     case "measure": return Measure();
     case "compare": return Compare();
     case "ships": return Ships();
+    case "audio": return Audio();
     default: return Help();
 }
 
@@ -46,6 +51,12 @@ int Help()
                     Exit code 1 if any measured value is outside tolerance.
 
           ships     List ship classes and their provenance.
+
+          audio     Export the music and sound effects for listening and editing.
+                      --out <dir>             (default: audio-preview)
+                      --soundfont <file.sf2>  render music through a SoundFont instead of FM
+                      --seed <n>              also render the adaptive soundtrack of an
+                                              autopilot run of the vertical slice (default 1)
 
           Global:   --ships <ships.json>      use a different ship catalog
         """);
@@ -157,4 +168,67 @@ int Ships()
     foreach (ShipClass c in catalog.All.OrderBy(c => c.Id))
         Console.WriteLine($"{c.Id,-6} {c.Name,-20} {c.Category,-8} speed {c.MaxSpeed,5} hull {c.Hull,5} shields {c.ShieldCapacity,4}  [{c.Provenance}]");
     return 0;
+}
+
+int Audio()
+{
+    string dir = Opt("--out") ?? "audio-preview";
+    Directory.CreateDirectory(dir);
+    const int rate = 32000;
+    string? sf2 = Opt("--soundfont");
+    ISynth NewSynth() => sf2 is null ? new FmSynth(rate) : new SoundFontSynth(sf2, rate);
+
+    IReadOnlyDictionary<MusicCue, CueTrack> score = Score.Default();
+    foreach (var (cue, track) in score)
+    {
+        File.WriteAllBytes(Path.Combine(dir, $"{cue.ToString().ToLowerInvariant()}.mid"), track.File.Write());
+        var director = new MusicDirector(NewSynth(), new Dictionary<MusicCue, CueTrack> { [cue] = track with { Then = MusicCue.None } });
+        director.Request(cue);
+        float seconds = track.Loop ? 30f : 12f;
+        var (l, r) = RenderFor(director, seconds, rate);
+        WavWriter.Write(Path.Combine(dir, $"{cue.ToString().ToLowerInvariant()}.wav"), rate, l, r);
+    }
+
+    foreach (SfxId id in Enum.GetValues<SfxId>())
+        WavWriter.Write(Path.Combine(dir, $"sfx_{id.ToString().ToLowerInvariant()}.wav"), SfxSynth.SampleRate, SfxSynth.Generate(id));
+
+    // The adaptive score of a whole mission: sim time drives the director exactly as in the client.
+    ulong seed = ulong.Parse(Opt("--seed") ?? "1");
+    World world = World.ForMission(MissionDefinition.LoadBuiltIn("vertical_slice"), catalog, seed: seed, autopilotPlayer: true);
+    var mission = new MusicDirector(NewSynth(), score);
+    var mood = new MoodTracker();
+    int perTick = rate / world.Rules.TickRate;
+    var left = new List<float>();
+    var right = new List<float>();
+    var bufL = new float[perTick];
+    var bufR = new float[perTick];
+    MusicCue last = MusicCue.None;
+    float endAt = float.MaxValue;
+    while (world.Time < endAt && world.Time < 600f)
+    {
+        world.Step();
+        if (world.Mission!.Result is not null && endAt == float.MaxValue) endAt = world.Time + 10f;
+        mission.Request(mood.Evaluate(world));
+        mission.Render(bufL, bufR);
+        left.AddRange(bufL);
+        right.AddRange(bufR);
+        if (mission.Current != last) { Console.WriteLine($"[{world.Time,6:0.0}s] music -> {mission.Current}"); last = mission.Current; }
+    }
+    WavWriter.Write(Path.Combine(dir, $"mission_soundtrack_seed{seed}.wav"), rate, left.ToArray(), right.ToArray());
+    Console.WriteLine($"Wrote cues (.mid + .wav), {Enum.GetValues<SfxId>().Length} effects and the mission soundtrack to {dir}/");
+    return 0;
+}
+
+static (float[] L, float[] R) RenderFor(MusicDirector director, float seconds, int rate)
+{
+    int n = (int)(seconds * rate);
+    var l = new float[n];
+    var r = new float[n];
+    const int block = 512;
+    for (int i = 0; i < n; i += block)
+    {
+        int len = Math.Min(block, n - i);
+        director.Render(l.AsSpan(i, len), r.AsSpan(i, len));
+    }
+    return (l, r);
 }

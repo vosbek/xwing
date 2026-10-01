@@ -8,6 +8,7 @@ public sealed record ShipDestroyed(float Time, int ShipId, string Callsign, int?
 public sealed record ShipCollision(float Time, int ShipA, int ShipB, float Damage) : SimEvent(Time);
 public sealed record HyperspaceEntered(float Time, int ShipId, string Callsign) : SimEvent(Time);
 public sealed record LaserFired(float Time, int ShipId, int Bolts) : SimEvent(Time);
+public sealed record TurretFired(float Time, int ShipId, System.Numerics.Vector3 Muzzle) : SimEvent(Time);
 public sealed record LaserDry(float Time, int ShipId) : SimEvent(Time);
 public sealed record RadioMessage(float Time, string Text) : SimEvent(Time);
 public sealed record GoalStateChanged(float Time, int GoalIndex, string Description, Missions.GoalState State) : SimEvent(Time);

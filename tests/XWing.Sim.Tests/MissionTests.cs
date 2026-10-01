@@ -85,4 +85,19 @@ public class MissionTests
         };
         Assert.Throws<InvalidDataException>(() => World.ForMission(bad));
     }
+
+    [Fact]
+    public void Unknown_ship_class_is_rejected_at_load_even_for_late_arrivals()
+    {
+        var bad = new MissionDefinition
+        {
+            FlightGroups =
+            {
+                new FlightGroupDef { Name = "Red", ShipClass = "XWING", IsPlayer = true },
+                new FlightGroupDef { Name = "Later", ShipClass = "STARDESTROYER", Arrival = new TriggerDef { Type = TriggerType.Time, Seconds = 60 } },
+            },
+        };
+        var ex = Assert.Throws<InvalidDataException>(() => World.ForMission(bad));
+        Assert.Contains("STARDESTROYER", ex.Message);
+    }
 }

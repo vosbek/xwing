@@ -7,5 +7,6 @@
   </PropertyGroup>
   <ItemGroup>
     <ProjectReference Include="..\..\src\XWing.Sim\XWing.Sim.csproj" />
+    <ProjectReference Include="..\..\src\XWing.Audio\XWing.Audio.csproj" />
   </ItemGroup>
 </Project>

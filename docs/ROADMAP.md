@@ -6,7 +6,10 @@
 - [ ] Pin down units (SPEC T-03) and the tick behaviour (T-01)
 - [ ] Tune `ships.json` / `SimRules` until `compare` is green; promote SPEC entries to P2
 - [ ] Proton torpedoes: lock-on timing, tracking, damage
-- [ ] Sound: lasers, explosions, engine; event-driven from `SimEvent`s
+- [x] Sound: procedural lasers, explosions, hits, engine, hyperspace; event-driven from `SimEvent`s
+- [x] Adaptive MIDI music: FM synth, bar-synced cue switching, optional SoundFont, `.mid` overrides
+- [ ] Real compositions to replace the placeholder score (any GM `.mid`; see docs/AUDIO.md)
+- [ ] Settings screen: volumes, music on/off, synth choice
 - [ ] HOTAS: throttle axis, rudder, remapping UI, saved bindings
 - [ ] Input recording and replay (`ShipControls` + `ShipCommand` per tick)
 
@@ -28,5 +31,6 @@
 - [ ] Optional VR / TrackIR head look
 
 ## Non-goals
+- Byte-exact or frame-exact parity with the original. It's the reference, not the target.
 - Newtonian physics, 6DoF drift, or anything that changes how X-Wing flies.
 - Shipping any original asset.

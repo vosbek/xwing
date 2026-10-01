@@ -19,6 +19,7 @@ public static class Controls
     public const string LaserRecharge = "laser_recharge", ShieldRecharge = "shield_recharge", ShieldFocus = "shield_focus";
     public const string LasersToShields = "lasers_to_shields", ShieldsToLasers = "shields_to_lasers";
     public const string Hyperspace = "hyperspace";
+    public const string ToggleMusic = "toggle_music";
     public const string ToggleView = "toggle_view", Pause = "pause", Restart = "restart", Quit = "quit";
 
     public static void Register()
@@ -51,6 +52,7 @@ public static class Controls
         Bind(Hyperspace, 0.5f, Key.H);
 
         Bind(ToggleView, 0.5f, Key.V);
+        Bind(ToggleMusic, 0.5f, Key.M);
         Bind(Pause, 0.5f, Key.P);
         Bind(Restart, 0.5f, Key.F5);
         Bind(Quit, 0.5f, Key.Escape);

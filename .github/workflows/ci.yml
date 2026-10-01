@@ -18,5 +18,7 @@ jobs:
         run: dotnet run --project tools/XWing.Headless -- run --seed 1 --quiet
       - name: Compare against original-game measurements
         run: dotnet run --project tools/XWing.Headless -- compare
+      - name: Render audio previews
+        run: dotnet run --project tools/XWing.Headless -- audio --out audio-preview
       - name: Build Godot client assembly
         run: dotnet build godot/XWingGodot.sln

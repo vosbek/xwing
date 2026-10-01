@@ -21,3 +21,6 @@ original-assets/
 **/*.VOC
 # Local measurement capture (videos, DOSBox captures)
 research/captures/
+
+# Audio previews rendered by `xwing-headless audio`
+audio-preview/

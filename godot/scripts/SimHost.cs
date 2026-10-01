@@ -24,6 +24,7 @@ public partial class SimHost : Node3D
     private Camera3D _camera = null!;
     private Starfield _stars = null!;
     private Hud _hud = null!;
+    private AudioHost _audio = null!;
     private Node3D _worldRoot = null!;
     private double _accumulator;
     private Material _rebelBolt = null!, _imperialBolt = null!, _heavyBolt = null!;
@@ -40,7 +41,11 @@ public partial class SimHost : Node3D
     {
         Controls.Register();
         _catalog = ShipCatalog.LoadBuiltIn();
-        _mission = MissionDefinition.LoadBuiltIn("vertical_slice");
+        string[] userArgs = OS.GetCmdlineUserArgs();
+        int missionArg = Array.IndexOf(userArgs, "--mission");
+        _mission = missionArg >= 0 && missionArg + 1 < userArgs.Length
+            ? MissionDefinition.FromJson(File.ReadAllText(userArgs[missionArg + 1]))
+            : MissionDefinition.LoadBuiltIn("vertical_slice");
 
         AddChild(new WorldEnvironment
         {
@@ -74,6 +79,8 @@ public partial class SimHost : Node3D
         AddChild(layer);
         _hud = new Hud { Host = this };
         layer.AddChild(_hud);
+        _audio = new AudioHost { Host = this };
+        AddChild(_audio);
 
         // Dev aid: `-- --shot 12:/tmp/a.png --shot 30:/tmp/b.png` saves frames at those mission times
         // and quits after the last one. Used to check rendering in CI / headless sessions.
@@ -111,6 +118,7 @@ public partial class SimHost : Node3D
         World = World.ForMission(_mission, _catalog, seed: (ulong)System.Environment.TickCount64, autopilotPlayer: autopilot);
         Throttle = Player?.Controls.Throttle ?? 2f / 3f;
         _hud.Reset();
+        _audio.Reset();
         foreach (SimEvent e in World.EventLog) HandleEvent(e);
     }
 
@@ -120,6 +128,11 @@ public partial class SimHost : Node3D
         if (Input.IsActionJustPressed(Controls.Restart)) StartMission();
         if (Input.IsActionJustPressed(Controls.Pause)) Paused = !Paused;
         if (Input.IsActionJustPressed(Controls.ToggleView)) ExternalView = !ExternalView;
+        if (Input.IsActionJustPressed(Controls.ToggleMusic))
+        {
+            _audio.MusicMuted = !_audio.MusicMuted;
+            _hud.AddMessage(_audio.MusicMuted ? "Music off" : $"Music on ({_audio.MusicSource})");
+        }
 
         float dt = World.Rules.Dt;
         if (!Paused)
@@ -276,6 +289,7 @@ public partial class SimHost : Node3D
 
     private void HandleEvent(SimEvent e)
     {
+        _audio.OnEvent(World, e);
         switch (e)
         {
             case ShipDestroyed d when World.FindShip(d.ShipId) is { } s:

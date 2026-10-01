@@ -260,7 +260,7 @@ public partial class Hud : Control
 
         if (world.Time < 12f)
             Text(new Vector2(0, size.Y * 0.32f),
-                "Arrows: pitch/yaw   Q/E: roll   Space: fire   [ ] \\ Backspace: throttle   X: link   T/R: target   F9/F10: power   H: hyperspace   V: view",
+                "Arrows: pitch/yaw   Q/E: roll   Space: fire   [ ] \\ Backspace: throttle   X: link   T/R: target   F9/F10: power   H: hyperspace   V: view   M: music",
                 new Color(Green, Mathf.Clamp(12f - world.Time, 0, 1)), 14, HorizontalAlignment.Center, size.X);
 
         if (Host.Paused)

@@ -29,8 +29,9 @@ two automatically.
 | `shields.recharge_empty_to_full` | `shields=...` | Get shields knocked down (or transfer away), frames until both sides are full. |
 | `lasers.shots_full_to_dry` | `mode=Single` | From full charge, recharge Off, count shots until the guns stop. |
 
-Run each at least 3 times and record the mean. Set **tolerance** to max(2 × the spread of
-your runs, one frame), so the comparison is no stricter than the measurement.
+Run each at least 3 times and record the mean. Set **tolerance** to whichever is larger:
+2 × the spread of your runs, or about 10% of the value. We're after the original's feel
+(see the SPEC preamble), not frame-exact parity.
 
 ## Recording
 

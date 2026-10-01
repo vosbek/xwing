@@ -52,6 +52,9 @@ public sealed class MissionRuntime
             if (!_groups.ContainsKey(goal.FlightGroup))
                 throw new InvalidDataException($"Goal references unknown flight group '{goal.FlightGroup}'");
         foreach (FlightGroupDef g in definition.FlightGroups)
+            if (!world.Catalog.All.Any(c => string.Equals(c.Id, g.ShipClass, StringComparison.OrdinalIgnoreCase)))
+                throw new InvalidDataException($"Flight group '{g.Name}' uses unknown ship class '{g.ShipClass}'");
+        foreach (FlightGroupDef g in definition.FlightGroups)
             if (g.Arrival?.FlightGroup is { } fg && !_groups.ContainsKey(fg))
                 throw new InvalidDataException($"Flight group '{g.Name}' arrival references unknown group '{fg}'");
     }

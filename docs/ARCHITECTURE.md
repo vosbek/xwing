@@ -15,8 +15,10 @@
      │           │ SimEvents (ShipDestroyed, RadioMessage, MissionEnded, ...)
      ▼           ▼
  Godot client   Headless runner / tests / measurement harness
- (interpolated
-  rendering)
+ (interpolated      │
+  rendering)        │ the same events
+     │              ▼
+     └──────► XWing.Audio: SFX per event, MoodTracker → MusicDirector → MIDI sequencer → synth
 ```
 
 ## The tick
@@ -62,6 +64,14 @@ Everything visual is replaceable without touching the sim:
 Dev flags (after `--` on the Godot command line):
 - `--autopilot` makes the AI fly the player (attract mode, smoke test).
 - `--shot <seconds>:<file.png>` saves a frame at that mission time, then quits after the last one.
+- `--mission <file.json>` flies a mission file instead of the built-in vertical slice.
+
+## Audio
+
+`XWing.Audio` is engine-independent too. It reads the sim, but the sim never knows audio
+exists. The client feeds it `SimEvent`s for sound effects, and once per frame asks the
+`MoodTracker` which music cue fits. The `MusicDirector` switches cues on the next bar line.
+See [AUDIO.md](AUDIO.md).
 
 ## Why C# + Godot
 

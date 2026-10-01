@@ -106,6 +106,7 @@ public static class WeaponSystem
                 Heavy = true,
             });
             ship.TurretCooldowns[t] = spec.Cooldown * world.Rng.Range(0.85f, 1.15f);
+            world.Emit(new TurretFired(world.Time, ship.Id, mount));
         }
     }
 

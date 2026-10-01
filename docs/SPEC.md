@@ -1,8 +1,13 @@
-# X-Wing (1993) Runtime Specification: working draft
+# X-Wing (1993) Reference Specification: working draft
 
-This file is the point of the project. Each entry is one claim about how the original game
-behaves, with an ID that the code cites (`[SPEC F-03]`), the model the engine uses now, and
-how sure we are.
+Each entry is one claim about how the original game behaves, with an ID that the code cites
+(`[SPEC F-03]`), the model the engine uses now, and how sure we are.
+
+**This is a reference, not a contract.** The project aims to capture the original's essence
+with modest quality-of-life improvements, not to replicate it byte for byte. Original
+behaviour is the default. Where we deliberately differ, the change is listed in section
+**Q** with its reason. When a measured value and "what feels best" disagree on something
+that isn't core to the game's identity, feel wins; write down why.
 
 ## Provenance levels
 
@@ -17,6 +22,10 @@ how sure we are.
 **Current state: every numeric value is P0.** The structural claims below are the starting
 hypotheses. The workflow is: measure → record in `original.csv` → tune `ships.json` /
 `SimRules` until `xwing-headless compare` passes → bump the level here.
+
+Tolerances are feel-level: roughly ±10–15% for speeds, rates and recharge times. Ratios that
+define the game (X-wing vs TIE speed and turn, how much shields cost in speed) matter more
+than absolute values.
 
 Which version we're targeting matters. The 1993 floppy release, the B-Wing expansion, the
 1994 Collector's CD (which re-tuned some behaviour) and the 1998 Windows re-release differ.
@@ -106,3 +115,19 @@ time-to-range.
 | M-01 | Missions are made of flight groups that arrive on triggers (mission start, another group destroyed/arrived/attacked, time), with a delay. | `MissionDefinition` / `MissionRuntime` | P0 (shape modelled on the known XWI structure; exact trigger set TBD from format docs) |
 | M-02 | Goals per flight group (destroy, must survive, …) decide success. | DestroyAll, MustSurvive | P0 |
 | M-03 | Hyperspacing ends the mission; the outcome depends on goal state at that moment. Dying fails it. | Charge time, then depart; Success iff objectives complete and none failed | P0 |
+
+## Q: Deliberate departures (quality of life)
+
+Each one modernizes the experience without changing what the game is. Keep this list honest:
+if a change alters core feel, it doesn't belong here, so discuss it first.
+
+| ID | Change | Why it keeps the essence |
+|---|---|---|
+| Q-01 | Gameplay is framerate-independent: fixed sim tick, interpolated rendering | Same feel on any monitor; the original's speed varied with your PC |
+| Q-02 | Any resolution or aspect ratio; HUD scales with the window | Presentation only |
+| Q-03 | Instant mission restart (F5) and pause (P) | Removes friction, not challenge |
+| Q-04 | Optional chase camera (V) | Off by default; the cockpit stays the primary view |
+| Q-05 | Gamepad support and modern default keys (to be remappable) | Input convenience |
+| Q-06 | Music: original-style adaptive MIDI score, mute toggle (M), optional SoundFont, user `.mid` overrides | Keeps the iMUSE idea; sound quality is the player's choice |
+| Q-07 | Procedurally generated sound effects | No original assets ship; aim for the original's character, not its samples |
+| Q-08 | AI breaks off turning stalemates ("extend") and cuts throttle to turn tighter | Avoids endless circling; may or may not match the original (A-03) |

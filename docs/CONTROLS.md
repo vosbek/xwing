@@ -20,6 +20,7 @@ we use it; those are marked *(orig?)* until they're verified against the manual 
 | Lasers → shields / shields → lasers | `;` / `'` | — |
 | Hyperspace | H | — |
 | Cockpit / chase view | V | — |
+| Music on / off | M | — |
 | Pause | P | — |
 | Restart mission | F5 | — |
 | Quit | Esc | — |
