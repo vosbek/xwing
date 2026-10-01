@@ -24,3 +24,6 @@ research/captures/
 
 # Audio previews rendered by `xwing-headless audio`
 audio-preview/
+
+# Tools downloaded by play.ps1
+.tools/
