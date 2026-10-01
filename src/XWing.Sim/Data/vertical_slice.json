@@ -1,0 +1,66 @@
+// Vertical slice: one X-wing, a corvette to protect, and two waves of TIEs.
+// Original content written for this engine; not derived from any LucasArts mission.
+// Coordinates in meters. Heading 0 faces -Z, positive turns right.
+{
+  "name": "Vertical Slice: Corvette Escort",
+  "description": "Protect the corvette Valiant from two waves of TIE fighters, then jump to hyperspace.",
+  "flightGroups": [
+    {
+      "name": "Red",
+      "shipClass": "XWING",
+      "iff": "rebel",
+      "isPlayer": true,
+      "position": [0, 0, 0],
+      "heading": 0,
+      "throttle": 0.67
+    },
+    {
+      "name": "Valiant",
+      "shipClass": "CRV",
+      "iff": "rebel",
+      "skill": "veteran",
+      "position": [500, -120, -1600],
+      "heading": 90,
+      "throttle": 0.5,
+      "orders": {
+        "type": "flyWaypoints",
+        "cruiseThrottle": 0.5,
+        "loop": true,
+        "waypoints": [[3500, -120, -1600], [3500, -120, -5000], [-2500, -120, -5000], [-2500, -120, -1600]]
+      }
+    },
+    {
+      "name": "Alpha",
+      "shipClass": "TIE",
+      "iff": "imperial",
+      "count": 2,
+      "skill": "officer",
+      "position": [300, 150, -5200],
+      "heading": 180,
+      "orders": { "type": "attackFlightGroup", "target": "Red" }
+    },
+    {
+      "name": "Beta",
+      "shipClass": "TIE",
+      "iff": "imperial",
+      "count": 2,
+      "skill": "veteran",
+      "position": [-3500, 250, -3500],
+      "heading": 110,
+      "arrival": { "type": "flightGroupDestroyed", "flightGroup": "Alpha" },
+      "arrivalDelay": 8,
+      "orders": { "type": "attackFlightGroup", "target": "Valiant" }
+    }
+  ],
+  "goals": [
+    { "type": "destroyAll", "flightGroup": "Alpha" },
+    { "type": "destroyAll", "flightGroup": "Beta" },
+    { "type": "mustSurvive", "flightGroup": "Valiant" }
+  ],
+  "messages": [
+    { "trigger": { "type": "missionStart" }, "delay": 1, "text": "Valiant: Red Leader, TIEs on our scopes. Keep them off us until we finish charging the hyperdrive." },
+    { "trigger": { "type": "flightGroupAttacked", "flightGroup": "Valiant" }, "text": "Valiant: We're taking fire!" },
+    { "trigger": { "type": "flightGroupDestroyed", "flightGroup": "Alpha" }, "delay": 2, "text": "Valiant: Second wave inbound, they're going for us." },
+    { "trigger": { "type": "flightGroupArrived", "flightGroup": "Beta" }, "text": "Valiant: Beta group has arrived." }
+  ]
+}

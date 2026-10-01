@@ -1,0 +1,11 @@
+<Project Sdk="Microsoft.NET.Sdk">
+  <!-- Pure simulation: no Godot (or any engine) dependency. Must stay runnable headless. -->
+  <PropertyGroup>
+    <TargetFramework>net8.0</TargetFramework>
+    <RootNamespace>XWing.Sim</RootNamespace>
+    <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
+  </PropertyGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="Data\*.json" LogicalName="XWing.Sim.Data.%(Filename)%(Extension)" />
+  </ItemGroup>
+</Project>

@@ -1,0 +1,23 @@
+# .NET
+bin/
+obj/
+*.user
+.vs/
+TestResults/
+
+# Godot
+godot/.godot/
+godot/.mono/
+*.import
+export_presets.cfg
+
+# Never commit Lucasfilm/LucasArts data. Point the importer at your own install instead.
+original-assets/
+**/XWING.EXE
+**/*.XWI
+**/*.BRF
+**/*.LFD
+**/*.CFT
+**/*.VOC
+# Local measurement capture (videos, DOSBox captures)
+research/captures/
