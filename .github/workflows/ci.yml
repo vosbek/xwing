@@ -1,0 +1,22 @@
+name: CI
+
+on:
+  push:
+  pull_request:
+
+jobs:
+  sim:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-dotnet@v4
+        with:
+          dotnet-version: 8.0.x
+      - name: Test simulation
+        run: dotnet test XWing.sln
+      - name: Fly the vertical slice headless
+        run: dotnet run --project tools/XWing.Headless -- run --seed 1 --quiet
+      - name: Compare against original-game measurements
+        run: dotnet run --project tools/XWing.Headless -- compare
+      - name: Build Godot client assembly
+        run: dotnet build godot/XWingGodot.sln

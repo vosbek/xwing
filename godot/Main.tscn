@@ -1,0 +1,6 @@
+[gd_scene load_steps=2 format=3 uid="uid://b8xw1ngma1n00"]
+
+[ext_resource type="Script" path="res://scripts/SimHost.cs" id="1_simhost"]
+
+[node name="Main" type="Node3D"]
+script = ExtResource("1_simhost")

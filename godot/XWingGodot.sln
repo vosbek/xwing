@@ -1,0 +1,30 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 17
+VisualStudioVersion = 17.0.31903.59
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "XWingGodot", "XWingGodot.csproj", "{C657F49A-6F1F-4874-9AA2-FB1CF3F46448}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "XWing.Sim", "..\src\XWing.Sim\XWing.Sim.csproj", "{A00A605F-56B2-492E-90DC-0024AB1CD21C}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		ExportDebug|Any CPU = ExportDebug|Any CPU
+		ExportRelease|Any CPU = ExportRelease|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{C657F49A-6F1F-4874-9AA2-FB1CF3F46448}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{C657F49A-6F1F-4874-9AA2-FB1CF3F46448}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{C657F49A-6F1F-4874-9AA2-FB1CF3F46448}.ExportDebug|Any CPU.ActiveCfg = ExportDebug|Any CPU
+		{C657F49A-6F1F-4874-9AA2-FB1CF3F46448}.ExportDebug|Any CPU.Build.0 = ExportDebug|Any CPU
+		{C657F49A-6F1F-4874-9AA2-FB1CF3F46448}.ExportRelease|Any CPU.ActiveCfg = ExportRelease|Any CPU
+		{C657F49A-6F1F-4874-9AA2-FB1CF3F46448}.ExportRelease|Any CPU.Build.0 = ExportRelease|Any CPU
+		{A00A605F-56B2-492E-90DC-0024AB1CD21C}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{A00A605F-56B2-492E-90DC-0024AB1CD21C}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{A00A605F-56B2-492E-90DC-0024AB1CD21C}.ExportDebug|Any CPU.ActiveCfg = Debug|Any CPU
+		{A00A605F-56B2-492E-90DC-0024AB1CD21C}.ExportDebug|Any CPU.Build.0 = Debug|Any CPU
+		{A00A605F-56B2-492E-90DC-0024AB1CD21C}.ExportRelease|Any CPU.ActiveCfg = Release|Any CPU
+		{A00A605F-56B2-492E-90DC-0024AB1CD21C}.ExportRelease|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+EndGlobal

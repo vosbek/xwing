@@ -1,0 +1,3 @@
+# Measurements of the ORIGINAL game. Protocol: PROTOCOL.md in this folder.
+# Only real measurements go here. Engine values come from `xwing-headless measure`.
+test_id,ship,condition,value,unit,tolerance,source,notes
