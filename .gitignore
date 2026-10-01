@@ -9,7 +9,6 @@ TestResults/
 godot/.godot/
 godot/.mono/
 *.import
-export_presets.cfg
 
 # Never commit Lucasfilm/LucasArts data. Point the importer at your own install instead.
 original-assets/
@@ -27,3 +26,6 @@ audio-preview/
 
 # Tools downloaded by play.ps1
 .tools/
+
+# Exported game builds
+build/

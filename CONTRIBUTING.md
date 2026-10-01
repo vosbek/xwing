@@ -99,6 +99,18 @@ measurements go in `original.csv`.
 See [docs/AUDIO.md](docs/AUDIO.md). The short version: replace a cue by writing a General MIDI
 file. The code reads `.mid` files, and players can override cues without rebuilding.
 
+### Build the standalone Windows game
+CI does this on every push (workflow **Windows build**; download the `XWing-Remake-windows`
+artifact from the run). Tag `v*` to publish a GitHub Release. Locally, with Godot 4.3 .NET and
+its export templates installed:
+```bash
+dotnet build godot/XWingGodot.sln -c ExportRelease
+godot --headless --path godot --export-release "Windows Desktop" ../build/XWing-Remake/XWing.exe
+cp dist/windows/* build/XWing-Remake/
+```
+Linux can cross-export Windows builds too. To test the result without Windows:
+`wine XWing.exe --rendering-driver opengl3`.
+
 ## 6. Testing notes
 
 - `MissionTests.Autopilot_completes_the_vertical_slice` is a balance canary. If you make

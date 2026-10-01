@@ -32,6 +32,14 @@ listed in the spec.
 | Warheads (proton torpedoes), tractor beams, ion cannons | ⏳ next |
 | Original data import (XWI missions, ship models, sounds) | ⏳ see [ROADMAP](docs/ROADMAP.md) |
 
+## Play it
+
+- **Windows, nothing to install:** open the latest **Windows build** run under the repo's
+  *Actions* tab, download `XWing-Remake-windows`, unzip, and run `XWing.exe`.
+- **Windows, from source:** `powershell -ExecutionPolicy Bypass -File .\play.ps1` installs the
+  .NET 8 SDK and Godot 4.3 .NET if needed, builds, and launches. `-Compat` uses OpenGL on
+  machines without Vulkan.
+
 ## Quick start
 
 Requires the .NET 8 SDK. The client also needs Godot 4.3 **.NET edition**.
